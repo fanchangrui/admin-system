@@ -9,6 +9,10 @@ import axios from 'axios'
 
 const app = createApp(App)
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.interceptors.request.use(config => {
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
+})
 app.config.globalProperties.$axios = axios
 app.use(router)
 app.use(ElementPlus)

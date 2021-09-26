@@ -73,7 +73,7 @@ export default {
         console.log(res)
         if (res.meta.status!=200)return proxy.$message.error('登录失败')
         proxy.$message.success('登录成功')
-        console.log(res)
+
         window.sessionStorage.setItem("token",res.data.token)
         proxy.$router.push('/home')
       })
