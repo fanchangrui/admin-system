@@ -43,7 +43,7 @@
           <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.id)"></el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeUser(scope.row.id)"></el-button>
           <el-tooltip placement="top" content="分配角色" :enterable="false">
-            <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+            <el-button type="warning" icon="el-icon-setting" size="mini" @click="setRole(scope.row)"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -123,10 +123,41 @@
       </span>
     </template>
   </el-dialog>
+<!--  分配角色-->
+  <el-dialog
+    v-model="setRoleDialogVisible"
+    title="分配角色"
+    width="50%"
+    @close="setRoleDialogClosed"
+  >
+    <div>
+      <p>当前用户：{{userInfo.username}}</p>
+      <p>当前角色：{{userInfo.role_name}}</p>
+      <p>分配新角色：
+        <el-select v-model="selectedRoleId" placeholder="请选择角色">
+          <el-option
+            v-for="item in roleslist"
+            :key="item.id"
+            :label="item.roleName"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+      </p>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveRoleInfo"
+        >确定</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
-import { onMounted, getCurrentInstance, reactive, ref } from 'vue'
+import { onMounted, getCurrentInstance, reactive, ref, toRefs } from 'vue'
 
 export default {
   name: 'users',
@@ -144,7 +175,10 @@ export default {
       mobile: ''
     })
     let state =reactive({
-      editForm:{}
+      editForm:{},
+      userInfo:{},
+      roleslist:[],
+      selectedRoleId:''
     })
     const checkEmail =(rules,value,callback) =>{
       const regEmail=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
@@ -215,6 +249,7 @@ export default {
     let editFormRef =ref()
     let addDialogVisible = ref(false)
     let editDialogVisible =ref(false)
+    let setRoleDialogVisible=ref(false)
     async function getUserList () {
 
       const { data: res } = await proxy.$axios.get('users', { params: info })
@@ -253,6 +288,7 @@ export default {
           type: 'warning',
         }
       ).catch(err =>err)
+     if(confirmResult !=='confirm') return
      const {data:res} = await proxy.$axios.delete('users/' +id)
      if (res.meta.status !== 200){
        return proxy.$message.err('删除用户失败')
@@ -261,6 +297,7 @@ export default {
      getUserList()
     }
      function editUserInfo(){
+
       editFormRef.value.validate(async valid =>{
         if (!valid) return proxy.$message.err('修改用户数据不合法')
          const {data:res} = await proxy.$axios.put('users/' + state.editForm.id,{email:state.editForm.email,mobile:state.editForm.mobile})
@@ -271,11 +308,13 @@ export default {
       })
     }
     async function showEditDialog(id){
+
       const {data:res} = await proxy.$axios.get('users/'+ id)
       if(res.meta.status !== 200){
         return proxy.$message.err('获取用户信息失败')
       }
       state.editForm =res.data
+
       editDialogVisible.value = true
 
     }
@@ -291,6 +330,31 @@ export default {
         getUserList()
 
       })
+    }
+    async function saveRoleInfo(){
+      if(!state.selectedRoleId){
+        return proxy.$message.error('请选择要分配的角色')
+      }
+     const {data:res} = await proxy.$axios.put(`users/${state.userInfo.id}/role`,{rid:state.selectedRoleId})
+      if(res.meta.status !==200){
+        return proxy.$message.error('更新角色失败')
+      }
+      proxy.$message.success('更新角色成功')
+      getUserList()
+      setRoleDialogVisible.value =false
+    }
+    function setRoleDialogClosed () {
+      state.selectedRoleId= ''
+      state.userInfo ={}
+    }
+    async function setRole(userInfo){
+      state.userInfo=userInfo
+      const { data: res } = await proxy.$axios.get('roles')
+      if (res.meta.status !==200){
+        return proxy.$message.err('获取角色列表失败')
+      }
+      state.roleslist=res.data
+      setRoleDialogVisible.value=true
     }
     async function userStateChanged (userInfo) {
       const { data: res } = await proxy.$axios.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
@@ -324,10 +388,15 @@ export default {
       showEditDialog,
       editDialogVisible,
       state,
+      ...toRefs(state),
       editDialogClosed,
       editFormRef,
       editUserInfo,
-      removeUser
+      removeUser,
+      setRoleDialogVisible,
+      setRole,
+      saveRoleInfo,
+      setRoleDialogClosed
     }
   }
 }
