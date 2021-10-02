@@ -3,8 +3,10 @@ import login from '../components/Login/login.vue'
 import home from '../views/home'
 import welcome from '../components/Welcome/welcome'
 import users from '../components/asideList/users'
-import rights from '@/components/Power/rights'
-import roles from '@/components/Power/roles'
+import rights from '../components/Power/rights'
+import roles from '../components/Power/roles'
+import cate from "../components/Goods/cate";
+import params from "../components/Goods/params";
 const routes = [
   {
     path: '/login',
@@ -36,6 +38,17 @@ const routes = [
         path: '/roles',
         name: 'Roles',
         component: roles,
+      },
+      {
+        path: '/categories',
+        name: 'Categories',
+        component: cate,
+      },
+
+      {
+        path: '/params',
+        name: 'Params',
+        component: params,
       }
 
     ]
