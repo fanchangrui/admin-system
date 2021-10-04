@@ -20,14 +20,14 @@
               :class="['tagBot', index === 0 ? 'tagTop' : '','vcenter']"
             >
               <el-col :span="5"
-              ><el-tag closable>{{ item.cat_name }} </el-tag
+              ><el-tag >{{ item.cat_name }} </el-tag
               ><i class="el-icon-caret-right"></i
               ></el-col>
               <el-col :span="19">
-                    <el-tag type="success" closable v-for="(item2, index2) in item.children"
+                    <el-tag type="success"  v-for="(item2, index2) in item.children"
                             :key="item2.id">{{item2.cat_name }}
                     </el-tag>
-                    <i class="el-icon-caret-right"></i>
+
               </el-col>
             </el-row>
           </template>
