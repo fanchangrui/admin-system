@@ -7,6 +7,8 @@ import rights from '../components/Power/rights'
 import roles from '../components/Power/roles'
 import cate from "../components/Goods/cate";
 import params from "../components/Goods/params";
+import goods from "../components/Goods/list";
+import add from "../components/Goods/add";
 const routes = [
   {
     path: '/login',
@@ -44,12 +46,23 @@ const routes = [
         name: 'Categories',
         component: cate,
       },
-
       {
         path: '/params',
         name: 'Params',
         component: params,
+      },
+      {
+        path: '/goods',
+        name: 'goods',
+        component: goods,
+      },
+      {
+        path: '/goods/add',
+        name: 'goodsAdd',
+        component: add,
       }
+
+
 
     ]
   },
