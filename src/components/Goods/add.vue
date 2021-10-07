@@ -70,7 +70,12 @@
           </template>
         </el-upload>
       </el-tab-pane>
-      <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+      <el-tab-pane label="商品内容" name="4">
+        <QuillEditor theme="snow" ref="qe" v-model="addForm.goods_introduce"></QuillEditor>
+        <el-button type="primary" class="btns" @click="add"
+        >添加商品</el-button
+        >
+      </el-tab-pane>
     </el-tabs>
     </el-form>
   </el-card>
@@ -85,7 +90,7 @@
 
 <script>
 import {computed, getCurrentInstance, onMounted, reactive, ref, toRefs} from "vue";
-
+import _ from "lodash"
 export default {
   name: "add",
   setup(){
@@ -105,7 +110,9 @@ export default {
       goods_weight:0,
       goods_number:0,
       goods_cat:[],
-      pics:[]
+      pics:[],
+      goods_introduce:'',
+      attrs:[]
     })
     const cateProps =reactive({
       label:'cat_name',
@@ -211,6 +218,31 @@ export default {
       proxy.$message.success('获取分类数据成功')
       state.catelist =res.data
     }
+    function add(){
+      addFormRef.value.validate(async valid =>{
+        if (!valid){
+          return proxy.$message.error('请填写必要的表单项')
+        }
+        const form = _.cloneDeep(addForm)
+        form.goods_cat = form.goods_cat.join(',')
+        state.manyTableDate.forEach(item =>{
+          const newInfo = {attr_id:item.attr_id,attr_value:item.attr_vals.join(' ')}
+          addForm.attrs.push(newInfo)
+        })
+        state.onlyTableData.forEach(item =>{
+          const newInfo = {attr_id:item.attr_id,attr_value:item.attr_vals}
+          addForm.attrs.push(newInfo)
+        })
+        form.attrs =addForm.attrs
+        const {data:res} =await proxy.$axios.post('goods',form)
+        if (res.meta.status !==201){
+          return proxy.$message.error('添加商品失败')
+        }
+        proxy.$message.success('添加商品成功')
+        proxy.$router.push('/goods')
+        console.log(form)
+      })
+    }
     onMounted(() =>{
       getCateList()
     })
@@ -229,7 +261,7 @@ export default {
       handleRemove,
       handleSuccess,
       headerObj,
-
+      add
     }
   }
 }
@@ -242,4 +274,8 @@ export default {
 .previewImg{
   width: 100%;
 }
+.btns {
+  margin-top: 10px;
+}
+
 </style>
