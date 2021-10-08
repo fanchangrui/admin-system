@@ -10,6 +10,7 @@ import params from "../components/Goods/params";
 import goods from "../components/Goods/list";
 import add from "../components/Goods/add";
 import order from "../components/Order/order";
+import report from "../components/Report/report";
 const routes = [
   {
     path: '/login',
@@ -66,6 +67,11 @@ const routes = [
         path: '/orders',
         name: 'Order',
         component: order,
+      },
+      {
+        path: '/reports',
+        name: 'reports',
+        component: report,
       }
 
 
