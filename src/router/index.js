@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import login from '../components/Login/login.vue'
+/*import login from '../components/Login/login.vue'
 import home from '../views/home'
 import welcome from '../components/Welcome/welcome'
 import users from '../components/asideList/users'
@@ -10,7 +10,23 @@ import params from "../components/Goods/params";
 import goods from "../components/Goods/list";
 import add from "../components/Goods/add";
 import order from "../components/Order/order";
-import report from "../components/Report/report";
+import report from "../components/Report/report";*/
+const login = () => import(/* webpackChunkName: "login_home_welcome" */ '../components/Login/login')
+const home = () => import(/* webpackChunkName: "login_home_welcome" */ '../views/home')
+const welcome = () => import(/* webpackChunkName: "login_home_welcome" */ '../components/Welcome/welcome')
+
+const users = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../components/asideList/users')
+const rights = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../components/Power/rights')
+const roles = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../components/Power/roles')
+
+const cate = () => import(/* webpackChunkName: "Cate_Params" */ '../components/Goods/cate')
+const params = () => import(/* webpackChunkName: "Cate_Params" */ '../components/Goods/params')
+
+const goods = () => import(/* webpackChunkName: "GoodsList_Add" */ '../components/Goods/list')
+const add = () => import(/* webpackChunkName: "GoodsList_Add" */ '../components/Goods/add')
+
+const order = () => import(/* webpackChunkName: "Order_Report" */ '../components/Order/order')
+const report = () => import(/* webpackChunkName: "Order_Report" */ '../components/Report/report')
 const routes = [
   {
     path: '/login',

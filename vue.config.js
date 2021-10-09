@@ -7,6 +7,7 @@ module.exports = {
       }
     }
   },
+  lintOnSave:false,
   // 发布模式
   chainWebpack: config => {
     config.when(process.env.NODE_ENV === 'production', config => {
