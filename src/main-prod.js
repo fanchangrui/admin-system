@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import './assets/css/global.css'
-import ElementPlus from 'element-plus';
-import 'element-plus/theme-chalk/index.css';
+/*import ElementPlus from 'element-plus';
+import 'element-plus/theme-chalk/index.css';*/
 import './assets/fonts/iconfont.css'
 import axios from 'axios'
 import { QuillEditor } from '@vueup/vue-quill'
