@@ -10,7 +10,7 @@
         <el-button type="primary" @click="addDialogVisible=true">添加角色</el-button>
       </el-col>
     </el-row>
-    <el-table :data="rolelist" border stripe>
+    <el-table :data="rolelist" border stripe >
       <el-table-column type="expand" label="展开">
         <template #default="scope">
           <el-row :class="['tagBot', i1 === 0 ? 'tagTop' : '','vcenter']" v-for="(item1,i1) in scope.row.children" :key="item1.id">

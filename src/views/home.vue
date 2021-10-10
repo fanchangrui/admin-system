@@ -8,12 +8,18 @@
 
       </div>
       <div class="flow">
-        <img class="img1" src="../assets/logo.png" alt="">
-        <img class="img2" src="../assets/ele.png" alt="">
-        <img class="img3" src="../assets/github.png" alt="">
-        <el-button type="info" @click="loginOut">
+        <img class="img1" src="../assets/logo.png" alt="" @click="goVue">
+        <img class="img2" src="../assets/ele.png" alt="" @click="goelp">
+        <img class="img3" src="../assets/github.png" alt="" @click="goGithub">
+<!--        <el-button type="info" @click="loginOut">
           退出
-        </el-button>
+        </el-button>-->
+        <div class="flow2">
+          <el-tooltip placement="bottom" content="退出登录" :enterable="false">
+          <img class="img4" src="../assets/tc.gif" @click="loginOut" >
+          </el-tooltip>
+        </div>
+
       </div>
 
     </el-header>
@@ -91,6 +97,15 @@ export default {
       window.sessionStorage.setItem('activePath',activePath)
       activePath1.value = activePath
     }
+    function goGithub(){
+      window.location.href = 'https://github.com/fanchangrui/'
+    }
+    function goVue(){
+      window.location.href = 'https://v3.cn.vuejs.org/'
+    }
+    function goelp(){
+      window.location.href = 'https://element-plus.gitee.io/zh-CN/'
+    }
     return{
       loginOut,
       getMenuList,
@@ -99,7 +114,10 @@ export default {
       toggleClick,
       isCollapse,
       saveState,
-      activePath1
+      activePath1,
+      goGithub,
+      goVue,
+      goelp
     }
   }
 }
@@ -135,17 +153,29 @@ export default {
       width: 50px;
       height: 40px;
       margin-right: 20px;
+      cursor: pointer;
     }
     .img2{
       width: 100px;
       height: 40px;
       margin-right: 20px;
+      cursor: pointer;
     }
     .img3{
       width: 50px;
       height: 40px;
       margin-right: 20px;
+      cursor: pointer;
     }
+    .img4{
+      width: 50px;
+      height: 40px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+
+
   }
 
 }
